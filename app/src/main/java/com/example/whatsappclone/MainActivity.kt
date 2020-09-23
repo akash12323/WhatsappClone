@@ -17,10 +17,7 @@ class MainActivity : AppCompatActivity() {
 
         setSupportActionBar(toolbar)
 
-        val fragmentAdapter =
-            ScreenSliderAdapter(
-                supportFragmentManager
-            )
+        val fragmentAdapter = ScreenSliderAdapter( supportFragmentManager )
         viewPager.adapter = fragmentAdapter
         tabs.setupWithViewPager(viewPager)
 

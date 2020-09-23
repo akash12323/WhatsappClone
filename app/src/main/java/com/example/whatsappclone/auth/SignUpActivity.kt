@@ -17,6 +17,8 @@ import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.UploadTask
 import kotlinx.android.synthetic.main.activity_sign_up.*
 
+// IN THIS WE UPLOAD THE IMAGE TO THE FIREBASE STORAGE AND SAVE THE USER T THE FIREBASE FIRESTORE
+
 class SignUpActivity : AppCompatActivity() {
 
     val storage by lazy {
@@ -70,20 +72,6 @@ class SignUpActivity : AppCompatActivity() {
         startActivityForResult(i,1000)
     }
 
-//    private fun checkPermissionForImage() {
-//        if((checkSelfPermission(android.Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED) &&
-//            (checkSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED)){
-//
-//            val permission = arrayOf(android.Manifest.permission.READ_EXTERNAL_STORAGE)
-//            val permissionWrite = arrayOf(android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
-//
-//            requestPermissions(permission,1001)
-//            requestPermissions(permissionWrite,1002)
-//        }
-//        else{
-//            pickImage()
-//        }
-//    }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
@@ -91,7 +79,6 @@ class SignUpActivity : AppCompatActivity() {
             data?.data?.let {
                 userImgView.setImageURI(it)
                 uploadImage(it)
-//                Picasso.get().load(data.data).into(userImgView)
             }
         }
     }
@@ -99,26 +86,34 @@ class SignUpActivity : AppCompatActivity() {
     private fun uploadImage(it: Uri){
         nextBtn.isEnabled = false
         val ref = storage.reference.child("uploads/"+ auth.uid.toString())
-        val uploadTask = ref.putFile(it)
-
-        uploadTask.continueWithTask(com.google.android.gms.tasks.Continuation<UploadTask.TaskSnapshot,Task<Uri>> {task->
-            if(!task.isSuccessful){
-                task.exception?.let {
-                    throw it
+        ref.putFile(it)
+            .addOnSuccessListener {
+                ref.downloadUrl.addOnSuccessListener {
+                    download_url = it.toString()
+                    nextBtn.isEnabled = true
                 }
+                    .addOnFailureListener {  }
             }
-            return@Continuation ref.downloadUrl
-        }).addOnCompleteListener {
-            nextBtn.isEnabled = true
-            if(it.isSuccessful){
-                download_url = it.result.toString()
-                Log.i("URL","download url: ${download_url}")
-            }else{
-
-            }
-        }
-            .addOnFailureListener {
-
-            }
+            .addOnFailureListener {  }
+//        val uploadTask = ref.putFile(it)
+//        uploadTask.continueWithTask(com.google.android.gms.tasks.Continuation<UploadTask.TaskSnapshot,Task<Uri>> {task->
+//            if(!task.isSuccessful){
+//                task.exception?.let {
+//                    throw it
+//                }
+//            }
+//            return@Continuation ref.downloadUrl
+//        }).addOnCompleteListener {
+//            nextBtn.isEnabled = true
+//            if(it.isSuccessful){
+//                download_url = it.result.toString()
+//                Log.i("URL","download url: ${download_url}")
+//            }else{
+//
+//            }
+//        }
+//            .addOnFailureListener {
+//
+//            }
     }
 }

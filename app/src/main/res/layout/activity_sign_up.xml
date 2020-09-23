@@ -36,7 +36,7 @@
         android:clickable="true"
         android:layout_marginTop="20dp"
         android:scaleType="centerCrop"
-        android:src="@drawable/ic_launcher_background"
+        android:src="@drawable/addimage"
         />
 
 
