@@ -37,7 +37,6 @@ class SignUpActivity : AppCompatActivity() {
         setContentView(R.layout.activity_sign_up)
 
         userImgView.setOnClickListener{
-//            checkPermissionForImage()
             pickImage()
             //Firebase Extension :- Image Thumbnail
         }
