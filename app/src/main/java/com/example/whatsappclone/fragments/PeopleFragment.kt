@@ -75,9 +75,9 @@ class PeopleFragment: Fragment() {
                 if(holder is UserViewHolder){
                     holder.bind(user = model){ name: String, photo: String, id: String ->
                         val intent = Intent(requireContext(),ChatActivity::class.java)
-                        intent.putExtra(UID,id)
-                        intent.putExtra(NAME,name)
-                        intent.putExtra(IMAGE,photo)
+                        intent.putExtra(UID,id.toString())
+                        intent.putExtra(NAME,name.toString())
+                        intent.putExtra(IMAGE,photo.toString())
                         startActivity(intent)
                     }
                 }
